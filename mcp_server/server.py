@@ -8,7 +8,8 @@ from typing import Optional
 from mcp.server.fastmcp import FastMCP
 
 import os
-from simpleio import usb_led
+from simpleio import usb_led, usb_read_temperature, usb_read_humidity
+
 
 # --- Import hardware control helpers (if available) ---
 # try:
@@ -49,6 +50,34 @@ def led_control(
     usb_led(blue or 0, red or 0, green or 0, yellow or 0)
     led = {"blue": blue, "red": red, "green": green, "yellow": yellow}
     return json.dumps(led)
+
+# --- Tool: Read temperature ---
+@mcp.tool()
+def read_temperature() -> str:
+    """
+    Read current temperature from USB sensor in Celsius.
+    Use this when user asks about temperature, weather, or how hot/cold it is.
+    Example: read_temperature()
+    """
+    try:
+        value = usb_read_temperature()
+        return json.dumps({"temperature": value})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+
+# --- Tool: Read humidity ---
+@mcp.tool()
+def read_humidity() -> str:
+    """
+    Read current humidity percentage from USB sensor.
+    Use this when user asks about humidity, weather conditions, or if it feels dry/humid.
+    Example: read_humidity()
+    """
+    try:
+        value = usb_read_humidity()
+        return json.dumps({"humidity": value})
+    except Exception as e:
+        return json.dumps({"error": str(e)})
 
 # --- Tool: Get current time ---
 @mcp.tool()
