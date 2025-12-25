@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "usb_device_bot": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "D:/mcp_server/usb_device_bot",
+                "run",
+                "server.py"
+            ]
+        }
+    }
+}
